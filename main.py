@@ -32,7 +32,7 @@ def predict_air_quality(lat: float, lon: float):
     try:
         # 1. Dynamic Live Weather/Elevation Proxy Extraction Layer
         elev_res = requests.get(f"https://api.open-meteo.com/v1/elevation?latitude={lat}&longitude={lon}",
-                                timeout=3).json()
+                                timeout=10).json()
         elevation = elev_res['elevation'][0]
 
         weather_res = requests.get(
@@ -42,7 +42,7 @@ def predict_air_quality(lat: float, lon: float):
 
         aq_res = requests.get(
             f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={lat}&longitude={lon}&current=pm2_5,pm10,nitrogen_dioxide,sulphur_dioxide,carbon_monoxide,ozone",
-            timeout=3).json()
+            timeout=10).json()
         aq_data = aq_res['current']
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"External Meteorological API Failure: {str(e)}")

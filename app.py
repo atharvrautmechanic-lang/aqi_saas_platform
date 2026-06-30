@@ -10,7 +10,7 @@ st.title("🛰️ Satellite Multi-Pollutant Inference & Spatial Mapping Platform
 st.write("Real-time proxy-based machine learning estimations across geographic matrices.")
 
 # CHANGE THIS to your true Hugging Face direct app URL string:
-BACKEND_API_URL = "https://mechanic0072-aqi.hf.space/api/v1/predict"
+BACKEND_API_URL = "https://mechanic0072-aqi-direct.hf.space/api/v1/predict"
 
 # Layout splitting the workspace into two production zones
 tab1, tab2 = st.tabs(["🔍 Individual Location Inspector", "🗺️ High-Resolution Spatial Mesh Sweep"])

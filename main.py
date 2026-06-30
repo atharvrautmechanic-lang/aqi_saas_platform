@@ -22,6 +22,9 @@ FEATURES = [
     'CO_column_number_density', 'O3_column_number_density'
 ]
 
+@app.get("/")
+def home():
+    return {"status": "healthy", "message": "Inference Engine is running! Use /api/v1/predict?lat=X&lon=Y"}
 
 @app.get("/api/v1/predict")
 def predict_air_quality(lat: float, lon: float):
@@ -30,19 +33,14 @@ def predict_air_quality(lat: float, lon: float):
     logs metadata to the cloud database, and returns data payload to frontend.
     """
     try:
-        # 1. Dynamic Live Weather/Elevation Proxy Extraction Layer
-        elev_res = requests.get(f"https://api.open-meteo.com/v1/elevation?latitude={lat}&longitude={lon}",
-                                timeout=3).json()
+        # 1. Dynamic Live Weather/Elevation Proxy Extraction Layer (Increased timeout to 10s)
+        elev_res = requests.get(f"https://open-meteo.com/v1/elevation?latitude={lat}&longitude={lon}", timeout=10).json()
         elevation = elev_res['elevation'][0]
-
-        weather_res = requests.get(
-            f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_direction_10m",
-            timeout=3).json()
+        
+        weather_res = requests.get(f"https://open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_direction_10m", timeout=10).json()
         w_data = weather_res['current']
-
-        aq_res = requests.get(
-            f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={lat}&longitude={lon}&current=pm2_5,pm10,nitrogen_dioxide,sulphur_dioxide,carbon_monoxide,ozone",
-            timeout=3).json()
+        
+        aq_res = requests.get(f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={lat}&longitude={lon}&current=pm2_5,pm10,nitrogen_dioxide,sulphur_dioxide,carbon_monoxide,ozone", timeout=10).json()
         aq_data = aq_res['current']
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"External Meteorological API Failure: {str(e)}")

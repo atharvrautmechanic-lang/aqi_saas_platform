@@ -10,7 +10,7 @@ st.write("Real-time proxy-based machine learning estimations across geographic s
 city_name = st.text_input("Enter target city to inspect:", placeholder="e.g., Mumbai")
 
 # Link to your live Hugging Face Space URL (change this after deploying your backend)
-BACKEND_API_URL = "https://your-username-your-space-name.hf.space/api/v1/predict"
+BACKEND_API_URL = "https://mechanic0072-aqi.hf.space"
 
 if st.button("Initiate Satellite Scan"):
     if not city_name.strip():
